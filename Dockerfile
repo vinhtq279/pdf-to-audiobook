@@ -22,5 +22,6 @@ RUN mkdir output
 
 # Entrypoint mặc định
 # Khi chạy container, người dùng chỉ cần truyền tham số file PDF
-ENTRYPOINT ["python", "src/main.py"]
+# Cập nhật lệnh chạy: Gọi module src.main thay vì file script lẻ
+ENTRYPOINT ["python", "-m", "src.main"]
 CMD ["--help"]
