@@ -1,0 +1,8 @@
+# Core functionality
+edge-tts>=6.1.9
+pdfplumber>=0.10.3
+aiofiles>=23.2.1
+
+# Dev & Testing tools
+pytest>=7.4.0    # Framework kiểm thử
+flake8>=6.1.0    # Công cụ Linter (kiểm tra style code)

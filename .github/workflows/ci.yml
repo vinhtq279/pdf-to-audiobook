@@ -1,0 +1,42 @@
+name: Python CI Pipeline
+
+# Trigger: Chạy khi push vào nhánh main hoặc tạo Pull Request
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest # Môi trường máy chủ Linux ảo
+
+    steps:
+    # Bước 1: Checkout code từ repo xuống máy chủ ảo
+    - uses: actions/checkout@v3
+
+    # Bước 2: Cài đặt Python 3.9
+    - name: Set up Python 3.9
+      uses: actions/setup-python@v4
+      with:
+        python-version: "3.9"
+
+    # Bước 3: Cài đặt dependencies
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+    # Bước 4: Linting (Kiểm tra cú pháp và style)
+    # E501: Bỏ qua lỗi dòng quá dài (tùy chọn)
+    - name: Lint with flake8
+      run: |
+        # Dừng build nếu có lỗi cú pháp nghiêm trọng
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
+        # Cảnh báo các lỗi style nhẹ (không dừng build)
+        flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
+
+    # Bước 5: Chạy Test
+    - name: Test with pytest
+      run: |
+        pytest
